@@ -30,7 +30,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_height="200dp"
-        android:background="@drawable/card_background"
+        android:background="@drawable/card_answer_background"
         android:gravity="center"
         android:text="Barrack Obama"
         android:textColor="#000000"
@@ -75,4 +75,23 @@
         android:gravity="center"
         android:text="Barack Obama"
         android:textSize="40sp" />
+
+    <ImageView
+        android:id="@+id/toggle_choice_visibility"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="112dp"
+        app:srcCompat="@drawable/ic_iconmonstr_eye_5" />
+
+    <ImageView
+        android:id="@+id/toggle_choice_invisibility"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="112dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/eye_icon" />
 </RelativeLayout>
