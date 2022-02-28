@@ -8,6 +8,8 @@ The app displays a question and responds to a user's tap to display answer to th
 ### App Walk-though
 
 <img src="https://github.com/adeoyedewale/Flash-Card-App/blob/main/walkthrough.gif" width=200><br>
+<img src="https://github.com/adeoyedewale/Flash-Card-App/blob/main/walkthrough2.gif" width=200><br>
+
 
 ## Required
 - [x] Create New Project in Android Studio
