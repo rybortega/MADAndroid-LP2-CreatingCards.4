@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddCardActivity">
+
+    <EditText
+        android:id="@+id/etInputQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Type in your question"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/etInputAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/etInputQuestion"
+        android:layout_marginTop="10dp"
+        android:hint="Type in your answer"
+        android:inputType="textPersonName" />
+
+    <ImageView
+        android:id="@+id/ivCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:srcCompat="@drawable/cancel_icon" />
+
+    <ImageView
+        android:id="@+id/ivSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="271dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toStartOf="@+id/ivCancel"
+        app:srcCompat="@drawable/icon_save" />
+</RelativeLayout>
