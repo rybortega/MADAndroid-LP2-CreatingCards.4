@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvAnswer3;
     ImageView toggleChoiceVisibility;
     ImageView toggleChoiceInvisibility;
+    ImageView ivEdit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         tvAnswer3 = findViewById(R.id.tvAnswer3);
         toggleChoiceVisibility = findViewById(R.id.toggle_choice_visibility);
         toggleChoiceInvisibility = findViewById(R.id.toggle_choice_invisibility);
+        ivEdit = findViewById(R.id.ivEdit);
 
 
         flashcardQuestion.setOnClickListener(new View.OnClickListener(){
@@ -116,6 +118,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 100);
             }
         });
+
+        ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
+                String questionString = flashcardQuestion.getText().toString();
+                String answerString = flashcardAnswer.getText().toString();
+
+                intent.putExtra("stringKey1", questionString);
+                intent.putExtra("stringKey2", answerString);
+                MainActivity.this.startActivityForResult(intent, 100);
+            }
+        });
     }
 
     @Override
@@ -132,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 tvAnswer2.setVisibility(View.INVISIBLE);
                 tvAnswer3.setVisibility(View.INVISIBLE);
                 Snackbar.make(findViewById(R.id.flashcard_question),
-                        "New flash card created",
+                        "Card successfully created",
                         Snackbar.LENGTH_SHORT)
                         .show();
             }

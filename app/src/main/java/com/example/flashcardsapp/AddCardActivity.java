@@ -8,8 +8,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddCardActivity extends AppCompatActivity {
+
+    EditText etInputQuestion;
+    EditText etInputAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +22,14 @@ public class AddCardActivity extends AppCompatActivity {
 
         ImageView ivCancel = findViewById(R.id.ivCancel);
         ImageView ivSave = findViewById(R.id.ivSave);
+        etInputQuestion = findViewById(R.id.etInputQuestion);
+        etInputAnswer = findViewById(R.id.etInputAnswer);
+
+        String s1 = getIntent().getStringExtra("stringKey1");
+        String s2 = getIntent().getStringExtra("stringKey2");
+
+        etInputQuestion.setText(s1);
+        etInputAnswer.setText(s2);
 
         ivCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,12 +43,19 @@ public class AddCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent data = new Intent();
-                String inputQuestion = ((EditText) findViewById(R.id.etInputQuestion)).getText().toString();
-                String inputAnswer = ((EditText) findViewById(R.id.etInputAnswer)).getText().toString();
-                data.putExtra("QUESTION_KEY", inputQuestion);
-                data.putExtra("ANSWER_KEY", inputAnswer);
-                setResult(RESULT_OK, data);
-                finish();
+                String inputQuestion = etInputQuestion.getText().toString();
+                String inputAnswer = etInputAnswer.getText().toString();
+                if (inputQuestion.isEmpty()||inputAnswer.isEmpty()){
+                    Toast.makeText(AddCardActivity.this, "Must enter both question and answer", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Must enter both question and answer!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    data.putExtra("QUESTION_KEY", inputQuestion);
+                    data.putExtra("ANSWER_KEY", inputAnswer);
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
+
             }
         });
 
