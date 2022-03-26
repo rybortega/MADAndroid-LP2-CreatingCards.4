@@ -18,6 +18,9 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView flashcardQuestion;
@@ -28,6 +31,19 @@ public class MainActivity extends AppCompatActivity {
     ImageView toggleChoiceVisibility;
     ImageView toggleChoiceInvisibility;
     ImageView ivEdit;
+    ImageView ivNext;
+    FlashcardDatabase flashcardDatabase;
+    List<Flashcard> allFlashcards;
+    int currentCardDisplayedIndex = 0;
+    int randomCard;
+
+    // returns a random number between minNumber and maxNumber, inclusive.
+    // for example, if i called getRandomNumber(1, 3), there's an equal chance of it returning either 1, 2, or 3.
+    public int getRandomNumber(int minNumber, int maxNumber) {
+        Random rand = new Random();
+        return rand.nextInt((maxNumber - minNumber) + 1) + minNumber;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +58,22 @@ public class MainActivity extends AppCompatActivity {
         toggleChoiceVisibility = findViewById(R.id.toggle_choice_visibility);
         toggleChoiceInvisibility = findViewById(R.id.toggle_choice_invisibility);
         ivEdit = findViewById(R.id.ivEdit);
+        ivNext = findViewById(R.id.ivNext);
+        flashcardDatabase = new FlashcardDatabase(getApplicationContext());
 
+        allFlashcards = flashcardDatabase.getAllCards();
+
+        if (allFlashcards != null && allFlashcards.size() > 0) {
+            flashcardQuestion.setText(allFlashcards.get(0).getQuestion());
+            flashcardAnswer.setText(allFlashcards.get(0).getAnswer());
+            tvAnswer3.setText(allFlashcards.get(0).getAnswer());
+
+
+        }
 
         flashcardQuestion.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 flashcardQuestion.setVisibility(View.INVISIBLE);
                 flashcardAnswer.setVisibility(View.VISIBLE);
             }
@@ -131,6 +158,71 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivityForResult(intent, 100);
             }
         });
+
+        ivNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // don't try to go to next card if you have no cards to begin with
+                if (allFlashcards.size() == 0)
+                    return;
+                tvAnswer1.setVisibility(View.INVISIBLE);
+                tvAnswer2.setVisibility(View.INVISIBLE);
+                tvAnswer3.setVisibility(View.INVISIBLE);
+                // advance our pointer index so we can show the next card
+                currentCardDisplayedIndex++;
+
+                // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
+
+                if(currentCardDisplayedIndex >= allFlashcards.size()) {
+                    Snackbar.make(flashcardQuestion,
+                            "You've reached the end of the cards!!!!",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+                    currentCardDisplayedIndex = 0;
+                }
+
+                    // set the question and answer TextViews with data from the database
+
+                    randomCard = getRandomNumber(0, allFlashcards.size()-1);
+                    while (currentCardDisplayedIndex == randomCard && allFlashcards.size() > 1){
+                        randomCard = getRandomNumber(0, allFlashcards.size()-1);
+                    }
+                    flashcardQuestion.setText(allFlashcards.get(randomCard).getQuestion());
+                    flashcardAnswer.setText(allFlashcards.get(randomCard).getAnswer());
+                    tvAnswer3.setText(allFlashcards.get(randomCard).getAnswer());
+            }
+        });
+
+        findViewById(R.id.ivDelete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flashcardDatabase.deleteCard(flashcardQuestion.getText().toString());
+                allFlashcards = flashcardDatabase.getAllCards();
+                currentCardDisplayedIndex--;
+
+                if(allFlashcards.size() == 0) {
+                    Snackbar.make(flashcardQuestion,
+                            "No saved flashcard!",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+
+                    flashcardQuestion.setText("Add a new card!!!!!");
+
+                    tvAnswer1.setVisibility(View.INVISIBLE);
+                    tvAnswer2.setVisibility(View.INVISIBLE);
+                    tvAnswer3.setVisibility(View.INVISIBLE);
+                    return;
+                }
+                // set the question and answer TextViews with data from the database
+                randomCard = getRandomNumber(0, allFlashcards.size()-1);
+                while (currentCardDisplayedIndex == randomCard && currentCardDisplayedIndex != 0 ){
+                    randomCard = getRandomNumber(0, allFlashcards.size()-1);
+                }
+                flashcardQuestion.setText(allFlashcards.get(randomCard).getQuestion());
+                flashcardAnswer.setText(allFlashcards.get(randomCard).getAnswer());
+                tvAnswer3.setText(allFlashcards.get(randomCard).getAnswer());
+            }
+        });
     }
 
     @Override
@@ -146,10 +238,12 @@ public class MainActivity extends AppCompatActivity {
                 tvAnswer1.setVisibility(View.INVISIBLE);
                 tvAnswer2.setVisibility(View.INVISIBLE);
                 tvAnswer3.setVisibility(View.INVISIBLE);
-                Snackbar.make(findViewById(R.id.flashcard_question),
+                Snackbar.make(flashcardQuestion,
                         "Card successfully created",
                         Snackbar.LENGTH_SHORT)
                         .show();
+                flashcardDatabase.insertCard(new Flashcard(questionString, answerString));
+                allFlashcards = flashcardDatabase.getAllCards();
             }
         }
     }

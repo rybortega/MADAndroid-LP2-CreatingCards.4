@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/Users/engya/AndroidStudioProjects/Flash-Card-App-1/app/src/main/res/drawable/add_icon.xml" value="0.1" />
         <entry key="..\:/Users/engya/AndroidStudioProjects/Flash-Card-App-1/app/src/main/res/drawable/cancel_icon.xml" value="0.1" />
+        <entry key="..\:/Users/engya/AndroidStudioProjects/Flash-Card-App-1/app/src/main/res/drawable/delete_icon.xml" value="0.1" />
+        <entry key="..\:/Users/engya/AndroidStudioProjects/Flash-Card-App-1/app/src/main/res/drawable/edit_icon.xml" value="0.1" />
+        <entry key="..\:/Users/engya/AndroidStudioProjects/Flash-Card-App-1/app/src/main/res/drawable/icon_next.xml" value="0.1" />
         <entry key="..\:/Users/engya/AndroidStudioProjects/Flash-Card-App-1/app/src/main/res/drawable/icon_save.xml" value="0.1" />
         <entry key="..\:/Users/engya/AndroidStudioProjects/Flash-Card-App-1/app/src/main/res/layout/activity_add_card.xml" value="0.22" />
         <entry key="..\:/Users/engya/AndroidStudioProjects/Flash-Card-App-1/app/src/main/res/layout/activity_main.xml" value="0.2" />
