@@ -7,7 +7,7 @@ Flashcard app is able to save multiple user created cards so that users can revi
 
 ### App Walk-though
 
-<img src="https://imgur.com/a/iANrQYtf" width=200><br>
+<img src="https://imgur.com/a/iANrQYt" width=200><br>
 
 
 ## Required
