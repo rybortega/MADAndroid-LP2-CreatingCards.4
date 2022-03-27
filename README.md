@@ -7,7 +7,7 @@ Flashcard app is able to save multiple user created cards so that users can revi
 
 ### App Walk-though
 
-<img src="https://github.com/adeoyedewale/Flash-Card-App/blob/main/walkthrough4.gif" width=200><br>
+<img src="https://github.com/adeoyedewale/Flash-Card-App/blob/main/walkthrough5.gif", width=250 /><br>
 
 
 ## Required
