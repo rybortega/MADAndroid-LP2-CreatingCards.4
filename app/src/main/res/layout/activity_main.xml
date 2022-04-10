@@ -42,8 +42,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/flashcard_question"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="30dp"
         android:background="#f6b26b"
         android:gravity="center"
@@ -55,8 +56,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/tvAnswer1"
+        android:layout_centerInParent="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="30dp"
         android:background="#f6b26b"
         android:gravity="center"
@@ -68,8 +70,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/tvAnswer2"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="30dp"
         android:background="#f6b26b"
         android:gravity="center"
@@ -123,9 +126,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="87dp"
-        app:srcCompat="@drawable/icon_next" />
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="94dp"
+        app:srcCompat="@drawable/ic_iconmonstr_arrow_28" />
 
     <ImageView
         android:id="@+id/ivDelete"
@@ -133,6 +136,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="132dp"
+        android:layout_marginBottom="126dp"
         app:srcCompat="@drawable/delete_icon" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/flashcard_question"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="52dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#E4123C"
+        android:textSize="30sp" />
+
 </RelativeLayout>

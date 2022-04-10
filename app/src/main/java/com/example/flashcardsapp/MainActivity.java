@@ -7,11 +7,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         Random rand = new Random();
         return rand.nextInt((maxNumber - minNumber) + 1) + minNumber;
     }
+    CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +69,48 @@ public class MainActivity extends AppCompatActivity {
 
         allFlashcards = flashcardDatabase.getAllCards();
 
+
+
+        countDownTimer = new CountDownTimer(16000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                ((TextView) findViewById(R.id.timer)).setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+            }
+        };
+
         if (allFlashcards != null && allFlashcards.size() > 0) {
             flashcardQuestion.setText(allFlashcards.get(0).getQuestion());
             flashcardAnswer.setText(allFlashcards.get(0).getAnswer());
             tvAnswer3.setText(allFlashcards.get(0).getAnswer());
 
-
         }
+        startTimer();
 
         flashcardQuestion.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+
+                // get the center for the clipping circle
+                int cx = flashcardAnswer.getWidth() / 2;
+                int cy = flashcardAnswer.getHeight() / 2;
+
+                // get the final radius for the clipping circle
+                float finalRadius = (float) Math.hypot(cx, cy);
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim = ViewAnimationUtils.createCircularReveal(flashcardAnswer, cx, cy, 0f, finalRadius);
+
+                // hide the question and show the answer to prepare for playing the animation!
                 flashcardQuestion.setVisibility(View.INVISIBLE);
                 flashcardAnswer.setVisibility(View.VISIBLE);
+
+                anim.setDuration(1000);
+                anim.start();
+
+                //flashcardQuestion.setVisibility(View.INVISIBLE);
+                //flashcardAnswer.setVisibility(View.VISIBLE);
             }
         });
         flashcardAnswer.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 //startActivity(intent);
                 startActivityForResult(intent, 100);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
 
@@ -162,35 +198,69 @@ public class MainActivity extends AppCompatActivity {
         ivNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // don't try to go to next card if you have no cards to begin with
-                if (allFlashcards.size() == 0)
-                    return;
-                tvAnswer1.setVisibility(View.INVISIBLE);
-                tvAnswer2.setVisibility(View.INVISIBLE);
-                tvAnswer3.setVisibility(View.INVISIBLE);
-                // advance our pointer index so we can show the next card
-                currentCardDisplayedIndex++;
+                startTimer();
 
-                // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
+                flashcardAnswer.setVisibility(View.INVISIBLE);
 
-                if(currentCardDisplayedIndex >= allFlashcards.size()) {
-                    Snackbar.make(flashcardQuestion,
-                            "You've reached the end of the cards!!!!",
-                            Snackbar.LENGTH_SHORT)
-                            .show();
-                    currentCardDisplayedIndex = 0;
-                }
+                final Animation leftOutAnim = AnimationUtils.loadAnimation(view.getContext(), R.anim.left_out);
+                final Animation rightInAnim = AnimationUtils.loadAnimation(view.getContext(), R.anim.right_in);
 
-                    // set the question and answer TextViews with data from the database
 
-                    randomCard = getRandomNumber(0, allFlashcards.size()-1);
-                    while (currentCardDisplayedIndex == randomCard && allFlashcards.size() > 1){
-                        randomCard = getRandomNumber(0, allFlashcards.size()-1);
+                leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // this method is called when the animation first starts
                     }
-                    flashcardQuestion.setText(allFlashcards.get(randomCard).getQuestion());
-                    flashcardAnswer.setText(allFlashcards.get(randomCard).getAnswer());
-                    tvAnswer3.setText(allFlashcards.get(randomCard).getAnswer());
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // this method is called when the animation is finished playing
+                        flashcardQuestion.startAnimation(rightInAnim);
+
+                        // Moved previous logic here
+
+
+                        // don't try to go to next card if you have no cards to begin with
+                        if (allFlashcards.size() == 0)
+                            return;
+                        //tvAnswer1.setVisibility(View.INVISIBLE);
+                        //tvAnswer2.setVisibility(View.INVISIBLE);
+                        //tvAnswer3.setVisibility(View.INVISIBLE);
+
+                        // advance our pointer index so we can show the next card
+                        currentCardDisplayedIndex++;
+
+                        // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
+
+                        if(currentCardDisplayedIndex >= allFlashcards.size()) {
+                            Snackbar.make(flashcardQuestion,
+                                    "You've reached the end of the cards!!!!",
+                                    Snackbar.LENGTH_SHORT)
+                                    .show();
+                            currentCardDisplayedIndex = 0;
+                        }
+
+                        // set the question and answer TextViews with data from the database
+
+                        randomCard = getRandomNumber(0, allFlashcards.size()-1);
+                        while (currentCardDisplayedIndex == randomCard && allFlashcards.size() > 1){
+                            randomCard = getRandomNumber(0, allFlashcards.size()-1);
+                        }
+                        flashcardQuestion.setText(allFlashcards.get(randomCard).getQuestion());
+                        flashcardQuestion.setVisibility(View.VISIBLE);
+                        flashcardAnswer.setText(allFlashcards.get(randomCard).getAnswer());
+                        tvAnswer3.setText(allFlashcards.get(randomCard).getAnswer());
+
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // we don't need to worry about this method
+                    }
+                });
+                flashcardQuestion.startAnimation(leftOutAnim);
+
             }
+
         });
 
         findViewById(R.id.ivDelete).setOnClickListener(new View.OnClickListener() {
@@ -223,6 +293,11 @@ public class MainActivity extends AppCompatActivity {
                 tvAnswer3.setText(allFlashcards.get(randomCard).getAnswer());
             }
         });
+    }
+
+    private void startTimer() {
+        countDownTimer.cancel();
+        countDownTimer.start();
     }
 
     @Override
