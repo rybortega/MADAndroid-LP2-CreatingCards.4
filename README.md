@@ -63,7 +63,7 @@ Flashcard app displays question, responds to user's tap to display answer to the
 - [x] User can edit a card
 - [x] An error message is shown if the user doesn't enter both a Question and an Answer
 - [x] A notification is shown if the card was created successfully
-- [ ] User can also enter multiple choice answers when creating a card
+- [x] User can also enter multiple choice answers when creating a card
 - [x] App is further styled and customized!
 
 
